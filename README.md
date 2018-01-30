@@ -33,7 +33,7 @@ In production just type: `npm start`.
 ## NEEDS:
 
 - React-Helmet (https://blog.digitalkwarts.com/server-side-rendering-with-reactjs-react-router-v4-react-helmet-and-css-modules/): !!!OK!!!
-- React Router: 
-- Initial Data (fetch)
+- React Router: !!!OK!!!
+- Initial Data (fetch): 
 - Redux Store at Server
 
