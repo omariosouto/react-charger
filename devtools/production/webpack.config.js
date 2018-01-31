@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 const webpackIsomorphicTools = new WebpackIsomorphicToolsPlugin(require('../isomorphictools.config'));
@@ -11,8 +12,6 @@ const srcPath = path.join(__dirname, '../', '../', '/src/');
 const distPath = path.join(__dirname, '../', '../', '/dist/');
 
 const PUBLIC_PATH = 'https://www.my-project-name.com/';  // webpack needs the trailing slash for output.publicPath 
-
-console.log(process.env)
 
 module.exports = {
     context: path.join(__dirname, '..', '..'),
@@ -95,6 +94,9 @@ module.exports = {
             replacePrefix: '',
             staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
           }
-        )
+        ),
+        new WebpackShellPlugin({
+          onBuildEnd:['npm run moveStaticFiles']
+        })
     ],
 }

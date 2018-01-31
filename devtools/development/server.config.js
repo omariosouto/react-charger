@@ -29,7 +29,7 @@ function loadDevServer(port) {
     app.use(webpackDevMiddleware(compiler, serverOptions));
     app.use(webpackHotMiddleware(compiler));
     app.use('*', function (req, res, next) {
-      res.set('content-type','text/html');
+      res.set('Content-Type','text/html');
       res.send(htmlTemplate());
       res.end();
     });

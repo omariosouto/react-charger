@@ -11,7 +11,7 @@ class App extends Component {
         <Helmet title="Home Page" />
         <header className="App-header">
           <img src={pikachuJPG} className="App-logo" alt="logo" />
-          <h1 className="App-title">Ben vinda!</h1>
+          <h1 className="App-title">Ben vindo!</h1>
         </header>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.

@@ -35,16 +35,36 @@ function serverSideRender(request, response) {
     const activeRoute = routesArray.find( route => route.props.path.match(new RegExp(`\^${request.url}\$`)) ? route : false )
     if(activeRoute) {
         const requestInitialData = activeRoute.props.component.requestInitialData && activeRoute.props.component.requestInitialData()
+        // Promise.resolve(requestInitialData)
 
-        Promise.resolve(requestInitialData)
+        initialDataResolver(requestInitialData)
         .then(initialData => {
-            const context = { initialData } || {}
+            const context = { initialData }
             const component = renderToString(
                 appTemplateWithStaticRouter({ url: request.url, routes, context })
             )
             response.send(htmlTemplate(component, initialData))
         })
     }
+}
+
+
+function initialDataResolver(initialDataFromUser) {     
+     const PromisesFromInitialData = []
+     for(let item in initialDataFromUser) {
+         PromisesFromInitialData.push(initialDataFromUser[item])
+     }
+         
+     return Promise.all(PromisesFromInitialData)
+            .then((promissesReturn) => {
+                const initialDataFromServer = {}
+                let i = -1;
+                for( let item in initialDataFromUser ) {
+                   i++
+                   initialDataFromServer[item] = promissesReturn[i]
+                }
+                return initialDataFromServer
+             });    
 }
 
 export function appTemplateWithStaticRouter({ url, routes, context }) {
@@ -55,7 +75,7 @@ export function appTemplateWithStaticRouter({ url, routes, context }) {
     )
 }
 
-export function htmlTemplate (component, initialData) {
+export function htmlTemplate (component = '', initialData) {
     // HTML Template
     const head = Helmet.rewind();
     const assets = webpackIsomorphicTools.assets()
@@ -66,15 +86,13 @@ export function htmlTemplate (component, initialData) {
             ${head.meta.toString()}
             ${head.link.toString()}
             <link rel="stylesheet" href="${assets.styles.main}" />
-            <script src="./service-worker.js"></script>
-            <script>window.__innitialData__ = ${serialize(initialData)}</script>
+            ${ process.env.NODE_ENV === 'production' ? '<script src="./service-worker.js"></script>' : ' ' }
+            <script>window.__innitialData__ = ${serialize(initialData)};</script>
         </head>
         <body>
-            <div id="root">
-                ${component}
-            </div>
-            <script src=${assets.javascript.vendor} charSet="UTF-8"></script>
-            <script src=${assets.javascript.main} charSet="UTF-8"></script>
+            <div id="root">${component}</div>
+            ${assets.javascript.vendor ? `<script src="${assets.javascript.vendor}"></script>` : ' '}
+            ${assets.javascript.main ? `<script src="${assets.javascript.main}"></script>` : ' '}
         </body>
         </html>
     `
