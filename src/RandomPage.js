@@ -22,15 +22,16 @@ class RandomPage extends Component {
       repos: initialData
     }
   }
+
   static requestInitialData() {
     return fetch('https://api.github.com/users/omariosouto/repos')
       .then((response) => response.json())
   }
 
   componentDidMount() {
-    console.log('didMount Only!', this.state.repos)
+    console.log('didMount!', this.state.repos)
     if (!this.state.repos) {
-      console.log('didMountRequest!')
+      console.log('didMount but no repos in state, let`s Request!')
       RandomPage.requestInitialData()
                 .then( repos => { 
                   this.setState({ repos: repos }) 
@@ -41,10 +42,7 @@ class RandomPage extends Component {
   render() {
     return (
       <div className="Random">
-        <Helmet>
-          <meta charSet="utf-8" />
-          <title>Random Page</title>
-        </Helmet>
+          <Helmet title="Random Page"/>
           <Link to="/">Home</Link>
         <h1>This is just another page :)</h1>
         <ul>

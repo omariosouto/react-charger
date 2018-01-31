@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production babel-node devtools/server",
-    "start:dev": "cross-env NODE_ENV=production nodemon --exec babel-node devtools/server",
+    "start:dev": "cross-env NODE_ENV=development babel-node devtools/server",
     "dev": "react-scripts start",
     "build": "rm -rf dist/ && cross-env NODE_ENV=production webpack --verbose --colors --display-error-details --progress --config devtools/production/webpack.config.js"
   },
@@ -29,6 +29,9 @@
     "img-loader": "^2.0.0",
     "style-loader": "^0.20.1",
     "uglifyjs-webpack-plugin": "^1.1.8",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-middleware": "^2.0.4",
+    "webpack-hot-middleware": "^2.21.0",
+    "react-hot-loader": "3.0.0-beta.7"
   }
 }

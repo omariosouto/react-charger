@@ -47,7 +47,7 @@ function serverSideRender(request, response) {
     }
 }
 
-function appTemplateWithStaticRouter({ url, routes, context }) {
+export function appTemplateWithStaticRouter({ url, routes, context }) {
     return (
         <StaticRouter location={url} context={context}>
         { routes }   
@@ -55,25 +55,24 @@ function appTemplateWithStaticRouter({ url, routes, context }) {
     )
 }
 
-function htmlTemplate (component, initialData) {
+export function htmlTemplate (component, initialData) {
     // HTML Template
     const head = Helmet.rewind();
     const assets = webpackIsomorphicTools.assets()
-    const html = `
-        <!DOCTYPE html>
+    const html = `<!DOCTYPE html>
         <html>
         <head>
             ${head.title.toString()}
             ${head.meta.toString()}
             ${head.link.toString()}
-            <link rel="stylesheet" href="${assets.styles.main}">
+            <link rel="stylesheet" href="${assets.styles.main}" />
             <script>window.__innitialData__ = ${serialize(initialData)}</script>
         </head>
         <body>
             <div id="root">
                 ${component}
             </div>
-            <script src=${ assets.javascript.vendor} charSet="UTF-8"></script>
+            <script src=${assets.javascript.vendor} charSet="UTF-8"></script>
             <script src=${assets.javascript.main} charSet="UTF-8"></script>
         </body>
         </html>
