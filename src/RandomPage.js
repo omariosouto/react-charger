@@ -45,8 +45,6 @@ class RandomPage extends Component {
     if (!this.state.repos) {
       console.log('didMount but no repos in state, let`s Request!')
       this.setState({ repos: [{ name: 'Mario' }, {name: 'Art'}] })
-      // --[FAZER O SETSTATE]--
-      // this.setState({ repos: repos }) 
     }
   }
 
