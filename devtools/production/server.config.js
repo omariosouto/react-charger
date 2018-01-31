@@ -13,6 +13,9 @@ import { routes } from '../../src/routes';
 // Isomorphic Stuff
 import serialize from "serialize-javascript";
 import "isomorphic-fetch"
+// Redux Stuff
+import { configureStore } from '../../src/store'
+import { Provider } from 'react-redux'
 
 const app = new Express()
 app.use(Express.static(path.join(__dirname, '../', '../', 'dist')));
@@ -31,20 +34,45 @@ function serverSideRender(request, response) {
         // res.send(component) // => Envia um HTML já pronto
 
     // 2 - Render with Routes
+    // const routesArray = routes.props.children.map( route => route )
+    // const activeRoute = routesArray.find( route => route.props.path.match(new RegExp(`\^${request.url}\$`)) ? route : false )
+    // if(activeRoute) {
+    //     const requestInitialData = activeRoute.props.component.requestInitialData && activeRoute.props.component.requestInitialData()
+    //     // Promise.resolve(requestInitialData)
+
+    //     initialDataResolver(requestInitialData)
+    //     .then(initialData => {
+    //         const context = { initialData }
+    //         const component = renderToString(
+    //             appTemplateWithStaticRouter({ url: request.url, routes, context })
+    //         )
+    //         response.send(htmlTemplate(component, initialData))
+    //     })
+    // }
+
+    // 3 - With React Router and Redux
+    const store = configureStore()
     const routesArray = routes.props.children.map( route => route )
     const activeRoute = routesArray.find( route => route.props.path.match(new RegExp(`\^${request.url}\$`)) ? route : false )
+    
     if(activeRoute) {
-        const requestInitialData = activeRoute.props.component.requestInitialData && activeRoute.props.component.requestInitialData()
-        // Promise.resolve(requestInitialData)
-
-        initialDataResolver(requestInitialData)
-        .then(initialData => {
-            const context = { initialData }
-            const component = renderToString(
-                appTemplateWithStaticRouter({ url: request.url, routes, context })
-            )
-            response.send(htmlTemplate(component, initialData))
-        })
+        const promises = []
+        if(activeRoute.props.component.requestInitialData) {
+            const requestInitialData = activeRoute.props.component.requestInitialData
+            promises.push( Promise.resolve(store.dispatch(requestInitialData())) )
+        }
+        
+        Promise.all(promises)
+               .then(() => {
+                    const initialData = store.getState()
+                    const context = { initialData }
+                    const component = renderToString(
+                        <Provider store={store}>
+                        { appTemplateWithStaticRouter({ url: request.url, routes, context }) }
+                        </Provider>
+                    )
+                    response.send(htmlTemplate(component, initialData))
+                })
     }
 }
 
