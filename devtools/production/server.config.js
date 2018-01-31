@@ -66,6 +66,7 @@ export function htmlTemplate (component, initialData) {
             ${head.meta.toString()}
             ${head.link.toString()}
             <link rel="stylesheet" href="${assets.styles.main}" />
+            <script src="./service-worker.js"></script>
             <script>window.__innitialData__ = ${serialize(initialData)}</script>
         </head>
         <body>
