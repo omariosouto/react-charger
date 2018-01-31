@@ -1,19 +1,32 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 
+function getRepos() {
+  return (dispatch) => {
+    dispatch( { type: 'LOAD_ITENS' } )
+  }
+}
 
-class RandomPage extends Component {
+class RandomPageRedux extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      repos: [ { name: 'Mario'} , { name: 'Art' } ]
+      repos: []
     }
   }
 
+  componentWillMount() {
+    this.context.store.subscribe(() => {
+      this.setState( { repos: this.context.store.getState().repos } )
+    })
+  }
+
   componentDidMount() {
-    console.log('didMount!', this.state.repos)
+    // this.context.store.dispatch({ type: 'LOAD_ITENS' })
+    this.context.store.dispatch(getRepos())
   }
 
   static requestInitialData() {
@@ -30,7 +43,7 @@ class RandomPage extends Component {
         <h1>This is just another page :)</h1>
         <ul>
           {this.state.repos && this.state.repos.map( (repo,index) => {
-            return (<li key={index}>{ repo.name }</li>)
+            return (<li key={index}>{ index }</li>)
           })}
         </ul>
       </div>
@@ -38,4 +51,8 @@ class RandomPage extends Component {
   }
 }
 
-export default RandomPage;
+export default RandomPageRedux;
+
+RandomPageRedux.contextTypes = {
+  store: PropTypes.object
+};

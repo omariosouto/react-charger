@@ -10,17 +10,18 @@ import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
 
-function postsReducer(store = [], action) {
+function reposReducer(state = [], action) {
     if(action.type === 'LOAD_ITENS') {
-        store = [1,2,3,4,5,6]
+        state = [1,2,3,4,5,6]
+        console.log(state)
     }
-
-    return store
+    return state
 }
 
 const store = createStore(
     combineReducers({
-            posts: postsReducer
+            repos: reposReducer,
+            trocos: reposReducer
     }),
     applyMiddleware(
         thunkMiddleware
