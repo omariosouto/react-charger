@@ -2,6 +2,7 @@
 import path from 'path'
 // Server Stuff
 import Express from 'express'
+import cookieParser from 'cookie-parser'
 // React Stuff
 import React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
@@ -19,6 +20,7 @@ import { Provider } from 'react-redux'
 import { readFile } from 'fs';
 
 const app = new Express()
+app.use(cookieParser())
 app.use(Express.static(path.join(__dirname, '../', '../', 'dist')));
 
 
@@ -32,6 +34,7 @@ app.get('*', (req, res) => {
 function serverSideRender(request, response) {
     response.set('Content-Type','text/html');
     console.log(request.url)
+    console.log(request.cookies)
     // # Current Component that will be rendered
     // 1 - Render just Component
         //const component = renderToString(<App />)
@@ -63,7 +66,7 @@ function serverSideRender(request, response) {
         const promises = []
         if(activeRoute.props.component.requestInitialData) {
             const requestInitialData = activeRoute.props.component.requestInitialData
-            promises.push( Promise.resolve(store.dispatch(requestInitialData())) )
+            promises.push( Promise.resolve(store.dispatch(requestInitialData(request))) )
         }
 
         Promise.all(promises)
@@ -83,23 +86,23 @@ function serverSideRender(request, response) {
 }
 
 
-function initialDataResolver(initialDataFromUser) {     
-     const PromisesFromInitialData = []
-     for(let item in initialDataFromUser) {
-         PromisesFromInitialData.push(initialDataFromUser[item])
-     }
+// function initialDataResolver(initialDataFromUser) {     
+//      const PromisesFromInitialData = []
+//      for(let item in initialDataFromUser) {
+//          PromisesFromInitialData.push(initialDataFromUser[item])
+//      }
          
-     return Promise.all(PromisesFromInitialData)
-            .then((promissesReturn) => {
-                const initialDataFromServer = {}
-                let i = -1;
-                for( let item in initialDataFromUser ) {
-                   i++
-                   initialDataFromServer[item] = promissesReturn[i]
-                }
-                return initialDataFromServer
-             });    
-}
+//      return Promise.all(PromisesFromInitialData)
+//             .then((promissesReturn) => {
+//                 const initialDataFromServer = {}
+//                 let i = -1;
+//                 for( let item in initialDataFromUser ) {
+//                    i++
+//                    initialDataFromServer[item] = promissesReturn[i]
+//                 }
+//                 return initialDataFromServer
+//              });    
+// }
 
 export function appTemplateWithStaticRouter({ url, routes, context }) {
     return (

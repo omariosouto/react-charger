@@ -4,11 +4,15 @@ import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { connect } from "react-redux";
 
-function getRepos() {
+function getRepos(externalInfo = { cookies: [] }) {
   return (dispatch) => {
+    console.log('pega reposs!')
     return fetch('https://api.github.com/users/omariosouto')
             .then( data => data.json() )
             .then( data => {
+              
+              console.log('externalInfo: ',externalInfo.cookies)
+              
               dispatch( { type: 'CHAT__LOAD_ITENS' } )
               return 0
             })
@@ -35,8 +39,8 @@ class RandomPageRedux extends Component {
     }
   }
   
-  static requestInitialData() {
-    return getRepos()
+  static requestInitialData(externalInfo) {
+    return getRepos(externalInfo)
   }
   
   render() {
