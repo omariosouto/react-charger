@@ -16,10 +16,14 @@ import "isomorphic-fetch"
 // Redux Stuff
 import { configureStore } from '../../src/store'
 import { Provider } from 'react-redux'
+import { readFile } from 'fs';
 
 const app = new Express()
 app.use(Express.static(path.join(__dirname, '../', '../', 'dist')));
 
+
+
+console.log('Path of file in parent dir:', path.resolve(__dirname, '..','..','public','index.html'));
 
 app.get('*', (req, res) => {
     serverSideRender(req, res)
@@ -61,7 +65,7 @@ function serverSideRender(request, response) {
             const requestInitialData = activeRoute.props.component.requestInitialData
             promises.push( Promise.resolve(store.dispatch(requestInitialData())) )
         }
-        
+
         Promise.all(promises)
                .then(() => {
                     const initialData = store.getState()
@@ -71,7 +75,9 @@ function serverSideRender(request, response) {
                         { appTemplateWithStaticRouter({ url: request.url, routes, context }) }
                         </Provider>
                     )
-                    response.send(htmlTemplate(component, initialData))
+                    htmlTemplate(component, initialData).then( html => {
+                        response.send(html)
+                    })
                 })
     }
 }
@@ -104,29 +110,50 @@ export function appTemplateWithStaticRouter({ url, routes, context }) {
 }
 
 export function htmlTemplate (component = '', initialData) {
+    const publicHTML = path.resolve(__dirname, '..','..','public','index.html')
     // HTML Template
     const head = Helmet.rewind();
     const assets = webpackIsomorphicTools.assets()
-    const html = `<!DOCTYPE html>
-        <html>
-        <head>
-            ${head.title.toString()}
-            ${head.meta.toString()}
-            ${head.link.toString()}
-            <link rel="stylesheet" href="${assets.styles.main}" />
-            ${ process.env.NODE_ENV === 'production' ? '<script src="./service-worker.js"></script>' : ' ' }
-            <script>window.__innitialData__ = ${serialize(initialData)};</script>
-        </head>
-        <body>
-            <div id="root">${component}</div>
-            ${assets.javascript.vendor ? `<script src="${assets.javascript.vendor}"></script>` : ' '}
-            ${assets.javascript.main ? `<script src="${assets.javascript.main}"></script>` : ' '}
-        </body>
-        </html>
-    `
-    return html
+
+    return new Promise((resolve, reject) => {
+        readFile(publicHTML, function(err, data) {
+            if(err) { reject(err) }
+            const template = data.toString()
+            const headInfo = extractHeadInfo(template)
+
+                const html = `<!DOCTYPE html>
+                <html>
+                <head>
+                    ${head.title.toString()}
+                    ${head.meta.toString()}
+                    ${head.link.toString()}
+                    <link rel="stylesheet" href="${assets.styles.main}" />
+                    ${ process.env.NODE_ENV === 'production' ? '<script src="./service-worker.js"></script>' : ' ' }
+                    <script>window.__innitialData__ = ${serialize(initialData)};</script>
+                    ${ headInfo }
+                </head>
+                <body>
+                    <div id="root">${component}</div>
+                    ${assets.javascript.vendor ? `<script src="${assets.javascript.vendor}"></script>` : ' '}
+                    ${assets.javascript.main ? `<script src="${assets.javascript.main}"></script>` : ' '}
+                </body>
+                </html>
+            `
+            resolve(html)
+        })
+    })
 }
 
+
+function extractHeadInfo(template) {
+    return template.match(/<head>([\w\W]*)<\/head>/)
+                    .join('')
+                    .replace(/<\/?head>/g, '')
+                    .replace(/%PUBLIC_URL%/g, '')
+                    .replace(/<title>([\w\W]*)<\/title>/, '')
+                    .replace(/<!--[^>]*-->/g, '')
+                    .trim()
+}
 
 
 
