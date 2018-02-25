@@ -1,6 +1,6 @@
 import react from './react'
-import reactRouter from './react-router'
-import reactRouterRedux from './react-router-redux'
+import reactRouter from './reactRouter'
+import reactRouterRedux from './reactRouterRedux'
 
 export default {
     react,

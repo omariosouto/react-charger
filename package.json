@@ -1,6 +1,6 @@
 {
   "ssr": "react",
-  "name": "instaelum-ssr-boilerplate",
+  "name": "react-charger-boilerplate",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

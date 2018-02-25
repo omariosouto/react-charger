@@ -3,6 +3,22 @@
 
 A ideia é você precisar do mínimo de configuração possível para ter uma aplicação que faz server side render, tanto para propostas.
 
+# E como isso tudo funciona?
+Este projeto inclui inicialmente 3 formas de Server Side Render sendo elas:
+
+- react
+- reactRouter
+- reactRouterRedux
+
+Para alternar entre as formas, tudo o que você precisa fazer é no seu arquivo package.json, alterar o valor da chave `"ssr"` assim:
+
+```js
+{
+  "ssr": "react|reactRouter|reactRouterRedux",
+  ...
+}
+```
+
 # Como usar?
 ## Desenvolvimento
 Enquanto estiver desenvolvendo sua aplicação, recomendamos que use:
