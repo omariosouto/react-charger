@@ -12,13 +12,13 @@ import cookieParser from 'cookie-parser'
 // import { StaticRouter, matchPath } from 'react-router-dom'
 // import { routes } from '../../src/routes';
 // Isomorphic Stuff
-import serialize from "serialize-javascript";
-// import "isomorphic-fetch"
+// import serialize from "serialize-javascript";
 // // Redux Stuff
 // import { configureStore } from '../../src/store'
 // import { Provider } from 'react-redux'
 
 // Server Side Render Stuff
+import "isomorphic-fetch"
 import packageJson from '../../package.json'
 import serverSideRenderTypes from '../serverSideRenderTypes'
 

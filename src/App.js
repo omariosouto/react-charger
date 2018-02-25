@@ -4,6 +4,14 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  
+  static componentInitialData() {
+    return {
+      posts: fetch('https://api.github.com/users/omariosouto').then( data => data.json() ),
+      repos: fetch('https://api.github.com/users/omariosouto/repos').then( data => data.json() )
+   }
+  }
+
   render() {
     return (
       <div className="App">
