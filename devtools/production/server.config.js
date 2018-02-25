@@ -26,10 +26,6 @@ const app = new Express()
 app.use(cookieParser())
 app.use(Express.static(path.join(__dirname, '../', '../', 'dist')));
 
-
-
-console.log('Path of file in parent dir:', path.resolve(__dirname, '..','..','public','index.html'));
-
 app.get('*', (req, res) => {
     serverSideRender(req, res)
 })
@@ -92,7 +88,9 @@ function serverSideRender(request, response) {
     // }
 }
 
-app.listen(4600, () => console.log('Servidor subiu com sucesso!'))
+const port = process.env.port || 4600
+
+app.listen(port, () => console.log('Servidor subiu com sucesso!'))
 
 
 function initialDataResolver(initialDataFromUser) {     
