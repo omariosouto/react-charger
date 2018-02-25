@@ -1,39 +1,16 @@
 # React Charger
+É uma solução de SSR (Server Side Render) criada como um enhancer do create-react-app.
 
-## !!ATTENTION!!
+A ideia é você precisar do mínimo de configuração possível para ter uma aplicação que faz server side render, tanto para propostas.
 
-You have to download these things:
+# Como usar?
+## Desenvolvimento
+Enquanto estiver desenvolvendo sua aplicação, recomendamos que use:
+```js
+npm run dev
+```
+> Este modo de desenvolvimento usa todos os recursos nativos do create-react-app (inclusive o recurso de code-split), caso você queira adicionar outros recursos como o `css-modules`, terá que fazer a sua configuração por conta própria.
 
-- ./devtools (folder)
-- .babelrc (file)
-- package.json (modified package.json with the new dependencies that you will need)
-- ./src/routes.js 
-
-Then: `npm install`
-
-## Before begin...
-
-You must to generate a first build of your app for SSR can track files.
-
-> npm run build
-
-## And when I start?
-
-Right now! Just type `npm start:dev` for develop with the ssr and live reload the server.
-
-## Production
-
-In production just type: `npm start`.
-
-
-
-
-######################################################
-
-## NEEDS:
-
-- React-Helmet (https://blog.digitalkwarts.com/server-side-rendering-with-reactjs-react-router-v4-react-helmet-and-css-modules/): !!!OK!!!
-- React Router: !!!OK!!!
-- Initial Data (fetch): 
-- Redux Store at Server
+## Produção
+Sempre que for rodar os comandos: `npm start` ou `npm start:dev`, é necessário que o `npm run build` seja rodado previamente.
 

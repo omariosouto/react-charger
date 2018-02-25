@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
+import pikachuJPG from './pikachu.jpg';
 import Helmet from 'react-helmet'
-import logo from './logo.svg';
+import { Link } from 'react-router-dom'
 import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Helmet title="App - React Charger" />
+        <Helmet title="Home Page" />
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <img src={pikachuJPG} className="App-logo" alt="logo" />
+          <h1 className="App-title">Ben vindo!</h1>
         </header>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <Link to={'/random'}>Random</Link>
       </div>
     );
   }
