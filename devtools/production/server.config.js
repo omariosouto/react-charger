@@ -91,7 +91,7 @@ function serverSideRender(request, response) {
 
 const port = process.env.port || 4600
 
-app.listen(port, () => console.log('Servidor subiu com sucesso!'))
+app.listen(port, () => console.log('Servidor subiu com sucesso!', process.env.port))
 
 
 function initialDataResolver(initialDataFromUser) {     
