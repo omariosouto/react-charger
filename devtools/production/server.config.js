@@ -27,6 +27,7 @@ app.use(cookieParser())
 app.use(Express.static(path.join(__dirname, '../', '../', 'dist')));
 
 app.get('*', (req, res) => {
+    console.log('URL:', req.url)
     serverSideRender(req, res)
 })
 
