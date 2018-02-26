@@ -18,15 +18,13 @@ import { Provider } from 'react-redux'
 import htmlTemplate from './commons/htmlTemplate'
 import initialDataResolver from './commons/initialDataResolver'
 
-import Home from '../../src/pages/Home'
-
 function renderComponent({
         Component,
         store
     }, request, response) {
     const promises = []
-    Home.componentInitialData().forEach((func) => {
-        promises.push( Promise.resolve(store.dispatch(func())) )
+    Component.componentInitialData().forEach((func) => {
+        promises.push( Promise.resolve(store.dispatch(func(request))) )
     })
 
     Promise.all(promises)
