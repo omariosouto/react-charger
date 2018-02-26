@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Helmet from 'react-helmet'
 import NavMenu from '../../components/NavMenu'
 
 class About extends Component {

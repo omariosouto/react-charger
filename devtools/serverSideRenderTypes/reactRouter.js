@@ -21,9 +21,10 @@ import htmlTemplate from './commons/htmlTemplate'
 import initialDataResolver from './commons/initialDataResolver'
 
 function renderComponent(Component, request, response) {
+    console.log(Component)
     const componentInitialData = Component.componentInitialData || (function() {});
 
-    initialDataResolver(componentInitialData())
+    initialDataResolver(componentInitialData(request))
         .then(initialData => {
             const context = { initialData }
             const componentAsString = renderToString(
@@ -44,9 +45,14 @@ export default (request, response) => {
 
     const routesArray = Routes().props.children.map( route => route )
     let activeRoute = routesArray.find( route => route.props.path.match(new RegExp(`\^${request.url}\$`)) ? route : false )
-    if(!activeRoute) {
+    if(!activeRoute) { // Set 404 Route
         activeRoute = routesArray.find( route => route.props.path.match(/\*/) ? route : false )
     }
+    if(activeRoute.props.render) { // Set Redirect
+        if(activeRoute.props.render().props.to) {
+            response.redirect(activeRoute.props.render().props.to)
+        }
+    } 
     if(activeRoute) {
         if(activeRoute.props.compPath) { // Load Async
             let componentPath = path.resolve(__dirname, '..', '..', 'src', activeRoute.props.compPath)
@@ -58,8 +64,8 @@ export default (request, response) => {
             renderComponent(activeRoute.props.component, request, response)
         }
 
-    } else {
-        response.send('Page not found')
+    } else { // You must create a component for 404 route with path '*'
+        response.send("You must create a component for 404 route with path '*'.")
     }
 
 }

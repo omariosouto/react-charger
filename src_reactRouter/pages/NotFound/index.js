@@ -1,5 +1,4 @@
 import React from 'react'
-import Helmet from 'react-helmet'
 import NavMenu from '../../components/NavMenu'
 
 const NotFound = () => {

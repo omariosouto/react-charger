@@ -15,7 +15,7 @@ export default (request, response) => {
 
     const componentInitialData = App.componentInitialData || (function() {})
 
-    initialDataResolver(componentInitialData())
+    initialDataResolver(componentInitialData(request))
         .then(initialData => {
             const context = { initialData }
             const componentAsString = renderToString(
