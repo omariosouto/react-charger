@@ -1,8 +1,3 @@
-// - fazer com duas rotas e uma sendo lazyLoaded: OK 
-// - Fazer rota de 404: OK
-// - Fazer teste de redirect pra Home: FALTOU
-// - Fazer rota com autenticação que sempre da true (Tweets): FALTOU
-
 // Node Stuff
 import path from 'path'
 require("require.async")(require);

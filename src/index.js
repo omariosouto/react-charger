@@ -14,7 +14,7 @@ import { configureStore } from './store'
 
 window.__initialData__ = window.__initialData__ || {}
  
-const store = configureStore(window.__innitialData__)
+const store = configureStore(window.__initialData__)
 
 ReactDOM.render(
     <Provider store={store}>
