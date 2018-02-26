@@ -17,9 +17,9 @@ Atualmente o projeto não possui uma forma sofisticada para ser utilizado (por i
 - Você deve iniciar sua aplicação com o **create-react-app** normalmente;
 - Feito isso, você deve clonar este projeto `git clone https://github.com/omariosouto/react-charger.git` ou **fazer download de um zip em uma pasta separada do seu projeto**;
 - Após ter feito o download você deve copiar os seguintes arquivos/pastas:
-  - .babelrc (Lembre-se que este arquivo pode estar oculto)
-  - /devtools (É uma pasta, pode copiar ela inteira)
-  - package.json (Sim, por enquanto copia e cola ele, se tiver um projeto em andamento toma cuidado)
+  * .babelrc (Lembre-se que este arquivo pode estar oculto);
+  * package.json (Sim, por enquanto copia e cola ele, se tiver um projeto em andamento toma cuidado);
+  * ./devtools (É uma pasta, pode copiar ela inteira);
 
 - Depois de pegar esses 3 caras, cole-os na raíz do projeto iniciado com o create-react-app
 - O último passo é deixar o seu arquivo **`src/index.js`** assim:
