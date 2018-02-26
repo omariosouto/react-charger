@@ -1,4 +1,5 @@
 # React Charger
+Fazer SSR é uma tarefa normalmente meio sofrida, cada lib que voc adiciona na sua app, pode precisar de uma configuração bizonha. Uma das ideias dessa ferramenta, é que seja possível não ter mais tanta dor de cabeça com isso, oferecendo soluções prontas que podem ser usadas dado alguns exemplos de estrutura da sua app (Usando React ou React com React Router e afins).
 É uma solução de SSR (Server Side Render) criada como um adicional em cima do create-react-app.
 
 A ideia é você precisar do mínimo de configuração possível para ter uma aplicação que faz Server Side Render.
