@@ -22,35 +22,12 @@ Atualmente o projeto não possui uma forma sofisticada para ser utilizado (por i
   * ./devtools (É uma pasta, pode copiar ela inteira);
 
 - Depois de pegar esses 3 caras, cole-os na raíz do projeto iniciado com o create-react-app
-- O último passo é deixar o seu arquivo **`src/index.js`** assim:
+- O último passo é adicionar essa linha no seu **`src/index.js`** assim:
 ```js
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './assets/css/index.css';
-
-// React Router Stuff
-import { BrowserRouter } from 'react-router-dom'
-import Routes from './routes'
-
-
-import registerServiceWorker from './registerServiceWorker';
-// Redux Things
-import { Provider } from 'react-redux'
-import { configureStore } from './store'
-
-window.__initialData__ = window.__initialData__ || {}
- 
-const store = configureStore(window.__initialData__)
-
-ReactDOM.render(
-    <Provider store={store}>
-        <BrowserRouter>
-            <Routes />
-        </BrowserRouter>
-    </Provider>
-    , document.getElementById('root'));
-registerServiceWorker();
+window.__initialData__ = window.__initialData__ || {} 
 ```
+- (Se você quiser suporte para Router ou Redux, será necessário se basear no arquivo index de uma das opções da sessão "Escolhendo o modelo de server render")
+    </Provider>
 - Qualquer problema que você tiver no processo, abre uma issue que a gente resolve :) 
 
 
