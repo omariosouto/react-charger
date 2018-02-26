@@ -1,0 +1,28 @@
+.ListTweets {
+  text-align: center;
+}
+
+.ListTweets-logo {
+  animation: ListTweets-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.ListTweets-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.ListTweets-title {
+  font-size: 1.5em;
+}
+
+.ListTweets-intro {
+  font-size: large;
+}
+
+@keyframes ListTweets-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
