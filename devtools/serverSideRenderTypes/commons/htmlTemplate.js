@@ -39,7 +39,7 @@ export default function htmlTemplate(component = '', initialData) {
                     ${head.link.toString()}
                     <link rel="stylesheet" href="${assets.styles.main}" />
                     ${ process.env.NODE_ENV === 'production' ? '<script src="./service-worker.js"></script>' : ' ' }
-                    <script>window.__innitialData__ = ${serialize(initialData)};</script>
+                    <script>window.__initialData__ = ${serialize(initialData)}; window.__isBrowser__ = typeof window === "object";</script>
                     ${ headInfo }
                 </head>
                 <body>
