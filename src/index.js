@@ -6,12 +6,21 @@ import './assets/css/index.css';
 import { BrowserRouter } from 'react-router-dom'
 import Routes from './routes'
 
+
 import registerServiceWorker from './registerServiceWorker';
-window.__initialData__ = window.__initialData__ || {} 
+// Redux Things
+import { Provider } from 'react-redux'
+import { configureStore } from './store'
+
+window.__initialData__ = window.__initialData__ || {}
+ 
+const store = configureStore(window.__innitialData__)
 
 ReactDOM.render(
-    <BrowserRouter>
-        <Routes />
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <Routes />
+        </BrowserRouter>
+    </Provider>
     , document.getElementById('root'));
 registerServiceWorker();

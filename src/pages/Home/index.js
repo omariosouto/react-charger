@@ -3,51 +3,43 @@ import Helmet from 'react-helmet'
 import NavMenu from '../../components/NavMenu'
 import logo from '../../assets/img/logo.svg';
 import './Home.css';
+// Redux things
+import PropTypes from 'prop-types'
+import { connect } from "react-redux";
+
+function getTweets() {
+  return (dispatch) => {
+    return fetch('http://twitelum-api.herokuapp.com/usuarios/omariosouto/tweets').then( data => data.json() )
+      .then((tweets) => {
+        dispatch({ type: 'TWEETS__LOAD_ITENS', tweets })
+      })
+  }
+}
+
+function getUserInfo() {
+  return (dispatch) => {
+    return fetch('http://twitelum-api.herokuapp.com/usuarios/omariosouto').then( data => data.json() )
+      .then((userInfo) => {
+        dispatch({ type: 'USERINFO__LOAD', userInfo })
+      })
+  }
+}
 
 class Home extends Component {
 
-  constructor(props) {
-    super(props)
-
-    const isServer = typeof window === 'undefined'
-    if(isServer) {
-      console.log('No server:', props.staticContext)
-      this.state = {
-        userInfo: props.staticContext.initialData.userInfo,
-        tweets: props.staticContext.initialData.tweets
-      }
-    } else {
-      this.state = {
-        userInfo: window.__initialData__.userInfo || {},
-        tweets: window.__initialData__.tweets || []
-      }
-    }
-
-  }
-  
   static componentInitialData() {
-    return {
-      userInfo: fetch('http://twitelum-api.herokuapp.com/usuarios/omariosouto').then( data => data.json() ),
-      tweets: fetch('http://twitelum-api.herokuapp.com/usuarios/omariosouto/tweets').then( data => data.json() )
-   }
+    return [
+      getTweets,
+      getUserInfo
+    ]
   }
 
   componentDidMount() {
-    if(!this.state.userInfo.login) {
-      fetch('http://twitelum-api.herokuapp.com/usuarios/omariosouto').then(response => response.json())
-        .then((responseInJSON) => {
-          this.setState({
-            userInfo: responseInJSON
-          })
-        })
+    if(!this.props.userInfo.login) {
+      this.props.dispatch(getUserInfo())
     }
-    if(this.state.tweets.length === 0) {
-      fetch('http://twitelum-api.herokuapp.com/usuarios/omariosouto/tweets').then(response => response.json())
-        .then((responseInJSON) => {
-          this.setState({
-            tweets: responseInJSON
-          })
-        })
+    if( this.props.tweets.length === 0 ) {
+      this.props.dispatch(getTweets())
     }
   }
 
@@ -64,9 +56,9 @@ class Home extends Component {
           To get started, edit <code>src/pages/Home/index.js</code> and save to reload.
         </p>
         <div>
-          Login: { this.state.userInfo && this.state.userInfo.login }
+          Login: { this.props.userInfo && this.props.userInfo.login }
           <ul>
-              { this.state.tweets && this.state.tweets.map( (tweet, index) => <li key={index}>{tweet.conteudo}</li> ) }
+              { this.props.tweets && this.props.tweets.map( (tweet, index) => <li key={index}>{tweet.conteudo}</li> ) }
           </ul>
         </div>
       </div>
@@ -74,4 +66,13 @@ class Home extends Component {
   }
 }
 
-export default Home;
+Home.contextTypes = {
+  store: PropTypes.object
+};
+
+const mapStateToProps = state => ({
+  tweets: state.tweets,
+  userInfo: state.userInfo
+});
+
+export default connect(mapStateToProps)(Home);
