@@ -14,8 +14,8 @@ const Router = () => {
     return (
         <Switch>
             <Route path="/" component={Home} exact />
-            <Route path="/about" component={AsyncAbout} />            
-            <Route path="/tweets" component={AsyncListTweets}/>
+            <Route path="/about" component={AsyncAbout} compPath="./pages/About" />            
+            <Route path="/tweets" component={AsyncListTweets} compPath="./pages/ListTweets"/>
             <Route path="*" component={NotFound} />
         </Switch>
     )

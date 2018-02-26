@@ -1,5 +1,7 @@
 // Node Stuff
 import path from 'path'
+require("require.async")(require);
+
 // Server Stuff
 import Express from 'express'
 import cookieParser from 'cookie-parser'
@@ -7,7 +9,6 @@ import cookieParser from 'cookie-parser'
 // import React from 'react'
 // import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 // import Helmet from 'react-helmet'
-// import App from '../../src/App'
 // // Router stuff
 // import { StaticRouter, matchPath } from 'react-router-dom'
 // import { routes } from '../../src/routes';
@@ -20,7 +21,6 @@ import cookieParser from 'cookie-parser'
 // Server Side Render Stuff
 import "isomorphic-fetch"
 import packageJson from '../../package.json'
-import serverSideRenderTypes from '../serverSideRenderTypes'
 
 const app = new Express()
 app.use(cookieParser())
@@ -31,12 +31,17 @@ app.get('*', (req, res) => {
     serverSideRender(req, res)
 })
 
+
 function serverSideRender(request, response) {
     response.set('Content-Type','text/html');
     console.log(request.url)
     console.log(request.cookies)
 
-    serverSideRenderTypes[packageJson.ssr](request, response)
+    // serverSideRenderTypes[packageJson.ssr](request, response)
+    const ssrType = path.resolve(__dirname, '..', 'serverSideRenderTypes', packageJson.ssr)
+    require.async(ssrType, (ssrFunction) => {
+        ssrFunction.default(request, response)
+    })
 
 
     // # Current Component that will be rendered

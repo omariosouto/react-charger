@@ -11,7 +11,7 @@ class Home extends Component {
 
     const isServer = typeof window === 'undefined'
     if(isServer) {
-      console.log('No server:', props.staticContext.initialData.userInfo.login)
+      console.log('No server:', props.staticContext)
       this.state = {
         userInfo: props.staticContext.initialData.userInfo,
         tweets: props.staticContext.initialData.tweets
