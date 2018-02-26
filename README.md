@@ -17,6 +17,57 @@ Atualmente o projeto não possui uma forma sofisticada para ser utilizado (por i
 - Você deve iniciar sua aplicação com o **create-react-app** normalmente;
 - Feito isso, você deve clonar este projeto `git clone https://github.com/omariosouto/react-charger.git` ou **fazer download de um zip em uma pasta separada do seu projeto**;
 - Após ter feito o download você deve copiar os seguintes arquivos/pastas:
-  - ...
-  - ...
-  - ...
+  - .babelrc (Lembre-se que este arquivo pode estar oculto)
+  - /devtools (É uma pasta, pode copiar ela inteira)
+  - package.json (Sim, por enquanto copia e cola ele, se tiver um projeto em andamento toma cuidado)
+
+- Depois de pegar esses 3 caras, cole-os na raíz do projeto iniciado com o create-react-app
+- O último passo é deixar o seu arquivo **`src/index.js`** assim:
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './assets/css/index.css';
+
+// React Router Stuff
+import { BrowserRouter } from 'react-router-dom'
+import Routes from './routes'
+
+
+import registerServiceWorker from './registerServiceWorker';
+// Redux Things
+import { Provider } from 'react-redux'
+import { configureStore } from './store'
+
+window.__initialData__ = window.__initialData__ || {}
+ 
+const store = configureStore(window.__initialData__)
+
+ReactDOM.render(
+    <Provider store={store}>
+        <BrowserRouter>
+            <Routes />
+        </BrowserRouter>
+    </Provider>
+    , document.getElementById('root'));
+registerServiceWorker();
+```
+- Qualquer problema que você tiver no processo, abre uma issue que a gente resolve :) 
+
+
+## Escolhendo o modelo de server render:
+A ideia é ter o minimo de configuração possível, para ajudar nisso o projeto já conta com 3 modelos de pasta `/src` que você pode usar para testar como fazer o SSR, sendo elas:
+
+- [React Puro](https://github.com/omariosouto/react-charger/tree/master/src_react): (Deixe o valor ssr do package.json assim:  `"ssr":"react"`)
+- [React com Router](https://github.com/omariosouto/react-charger/tree/master/src_reactRouter): (Deixe o valor ssr do package.json assim:  `"ssr":"reactRouter"`)
+- [React com Router e Redux](https://github.com/omariosouto/react-charger/tree/master/src): (Deixe o valor ssr do package.json assim:  `"ssr":"reactRouterRedux"`)
+
+
+## Comandos para rodar o projeto
+
+- `npm run dev`: É equivalente ao npm start do create-react-app, em localhost roda na porta **3000**
+- `npm run start`: É o comando para colocar o projeto em produção, em localhost roda na porta **4600** (SEMPRE ANTES DELE DEVE SER RODADO UM `npm run build`)
+- `npm run start:dev`: É o comando para testar alguma coisa que você queira alterar na configuração do SSR que fica dentro da pasta `devtools/serverSideRenderTypes` (SEMPRE ANTES DELE DEVE SER RODADO UM `npm run build`)
+
+
+
+
